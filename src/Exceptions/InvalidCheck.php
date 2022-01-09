@@ -7,7 +7,7 @@ use Spatie\Health\Checks\Check;
 
 class InvalidCheck extends Exception
 {
-    public static function doesNotExtendCheck(mixed $invalidValue): self
+    public static function doesNotExtendCheck($invalidValue): self
     {
         $checkClass = Check::class;
 
@@ -18,7 +18,7 @@ class InvalidCheck extends Exception
         }
 
         if (is_object($invalidValue)) {
-            $invalidClass = $invalidValue::class;
+            $invalidClass = get_class($invalidValue);
 
             $extraMessage = " You tried to register class `{$invalidClass}`";
         }

@@ -36,7 +36,7 @@ class MeiliSearchCheck extends Check
     {
         try {
             $response = Http::timeout($this->timeout)->asJson()->get($this->url);
-        } catch (Exception) {
+        } catch (Exception $exception) {
             return Result::make()
                 ->failed()
                 ->shortSummary('Unreachable')

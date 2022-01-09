@@ -18,7 +18,7 @@ class HealthCheckResultHistoryItemFactory extends Factory
             'check_label' => $this->faker->word(),
             'status' => $this->faker->randomElement(Status::toArray()),
             'notification_message' => $this->faker->text(),
-            'short_summary' => $this->faker->sentences(asText: true),
+            'short_summary' => $this->faker->sentences(3, true),
             'meta' => [],
             'batch' => (string) Str::uuid(),
             'ended_at' => $this->faker->dateTime()

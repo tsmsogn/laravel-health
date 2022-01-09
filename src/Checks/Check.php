@@ -20,7 +20,7 @@ abstract class Check
     {
     }
 
-    public static function new(): static
+    public static function new(): self
     {
         $instance = new static();
 
@@ -79,7 +79,7 @@ abstract class Check
         return new Result(Status::crashed());
     }
 
-    public function onTerminate(mixed $request, mixed $response): void
+    public function onTerminate($request, $response): void
     {
     }
 }

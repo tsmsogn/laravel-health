@@ -13,6 +13,7 @@ use Spatie\Health\Events\CheckStartingEvent;
 use Spatie\Health\Exceptions\CheckDidNotComplete;
 use Spatie\Health\Health;
 use Spatie\Health\Notifications\CheckFailedNotification;
+use Spatie\Health\Notifications\Notifiable;
 use Spatie\Health\ResultStores\ResultStore;
 
 class RunHealthChecksCommand extends Command
@@ -104,7 +105,7 @@ class RunHealthChecksCommand extends Command
 
         $notifiableClass = config('health.notifications.notifiable');
 
-        /** @var \Spatie\Health\Notifications\Notifiable $notifiable */
+        /** @var Notifiable $notifiable */
 
         $notifiable = app($notifiableClass);
 
@@ -128,13 +129,12 @@ class RunHealthChecksCommand extends Command
             $okMessage .= ": {$result->shortSummary}";
         }
 
-        match ($result->status) {
-            Status::ok() => $this->info($okMessage),
-            Status::warning() => $this->comment("{$status}: {$result->getNotificationMessage()}"),
-            Status::failed() => $this->error("{$status}: {$result->getNotificationMessage()}"),
-            Status::crashed() => $this->error("{$status}}: `{$exception?->getMessage()}`"),
-            default => null,
-        };
+        switch ($result->status) {
+            case Status::ok(): $this->info($okMessage); break;
+            case Status::warning(): $this->comment("{$status}: {$result->getNotificationMessage()}"); break;
+            case Status::failed(): $this->error("{$status}: {$result->getNotificationMessage()}"); break;
+            case Status::crashed(): $this->error("{$status}}: `" . ($exception ? $exception->getMessage() : '') . "`"); break;
+        }
     }
 
     protected function determineCommandResult(Collection $results): int

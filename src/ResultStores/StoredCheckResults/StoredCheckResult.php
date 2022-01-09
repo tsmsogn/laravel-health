@@ -4,6 +4,13 @@ namespace Spatie\Health\ResultStores\StoredCheckResults;
 
 class StoredCheckResult
 {
+    public string $name;
+    public string $label = '';
+    public string $shortSummary = '';
+    public string $notificationMessage = '';
+    public string $status = '';
+    public array $meta = [];
+
     /**
      * @param string $name
      * @param string $label
@@ -20,26 +27,33 @@ class StoredCheckResult
         string $notificationMessage = '',
         string $shortSummary = '',
         string $status = '',
-        array  $meta = [],
+        array  $meta = []
     ): self {
         return new self(...func_get_args());
     }
 
     /**
      * @param string $name
+     * @param string $label
      * @param string $notificationMessage
      * @param string $shortSummary
      * @param string $status
      * @param array<string, mixed> $meta
      */
     public function __construct(
-        public string $name,
-        public string $label = '',
-        public string $notificationMessage = '',
-        public string $shortSummary = '',
-        public string $status = '',
-        public array  $meta = [],
+        string $name,
+        string $label = '',
+        string $notificationMessage = '',
+        string $shortSummary = '',
+        string $status = '',
+        array  $meta = []
     ) {
+        $this->meta = $meta;
+        $this->status = $status;
+        $this->notificationMessage = $notificationMessage;
+        $this->shortSummary = $shortSummary;
+        $this->label = $label;
+        $this->name = $name;
     }
 
     public function notificationMessage(string $message): self

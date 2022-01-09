@@ -10,15 +10,16 @@ class CouldNotSaveResultsInStore extends Exception
 {
     public static function make(ResultStore $store, Exception $exception): self
     {
-        $storeClass = $store::class;
+        $storeClass = get_class($store);
 
         return new self(
-            message: "Could not save results in the `{$storeClass}` did not complete. An exception was thrown with this message: `{$exception->getMessage()}`",
-            previous: $exception,
+            "Could not save results in the `{$storeClass}` did not complete. An exception was thrown with this message: `{$exception->getMessage()}`",
+            0,
+            $exception
         );
     }
 
-    public static function doesNotExtendHealthCheckResultHistoryItem(mixed $invalidValue): self
+    public static function doesNotExtendHealthCheckResultHistoryItem($invalidValue): self
     {
         $className = HealthCheckResultHistoryItem::class;
 

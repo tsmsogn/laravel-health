@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^7.4|^8.0",
         "dragonmantank/cron-expression": "^3.1",
         "guzzlehttp/guzzle": "^6.5|^7.4",
         "illuminate/console": "^8.75",
@@ -28,7 +28,8 @@
         "spatie/enum": "^3.11",
         "spatie/laravel-package-tools": "^1.9.2",
         "spatie/regex": "^3.1",
-        "symfony/process": "^5.4|^6.0"
+        "symfony/process": "^5.4|^6.0",
+        "ext-json": "*"
     },
     "require-dev": {
         "laravel/horizon": "^5.7",

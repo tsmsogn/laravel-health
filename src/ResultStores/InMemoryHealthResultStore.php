@@ -18,16 +18,17 @@ class InMemoryHealthResultStore implements ResultStore
         $checkResults
             ->map(function (Result $result) {
                 return new StoredCheckResult(
-                    name: $result->check->getName(),
-                    label: $result->check->getLabel(),
-                    notificationMessage: $result->getNotificationMessage(),
-                    shortSummary: $result->getShortSummary(),
-                    status: (string)$result->status->value,
-                    meta: $result->meta,
+                    $result->check->getName(),
+                    $result->check->getLabel(),
+                    $result->getNotificationMessage(),
+                    $result->getShortSummary(),
+                    (string)$result->status->value,
+                    $result->meta,
                 );
             })
             ->each(function (StoredCheckResult $check) {
-                self::$storedCheckResults?->addCheck($check);
+                 if (self::$storedCheckResults)
+                     self::$storedCheckResults->addCheck($check);
             });
     }
 

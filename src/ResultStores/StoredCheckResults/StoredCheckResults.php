@@ -23,8 +23,8 @@ class StoredCheckResults
             ->sortBy(fn (StoredCheckResult $result) => strtolower($result->label));
 
         return new self(
-            finishedAt: (new DateTime())->setTimestamp($properties['finishedAt']),
-            checkResults: $checkResults,
+            (new DateTime())->setTimestamp($properties['finishedAt']),
+            $checkResults,
         );
     }
 
@@ -65,7 +65,7 @@ class StoredCheckResults
      *
      * @return bool
      */
-    public function containsCheckWithStatus(array|Status $statuses): bool
+    public function containsCheckWithStatus($statuses): bool
     {
         if ($statuses instanceof Status) {
             $statuses = [$statuses];

@@ -45,7 +45,7 @@ class PingCheck extends Check
             if (! Http::timeout($this->timeout)->get($this->url)->successful()) {
                 return $this->failedResult();
             }
-        } catch (Exception) {
+        } catch (Exception $exception) {
             return $this->failedResult();
         }
 

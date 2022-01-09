@@ -37,7 +37,7 @@ class RedisCheck extends Check
         return $result->ok();
     }
 
-    protected function pingRedis(): bool|string
+    protected function pingRedis()
     {
         return Redis::connection()->ping();
     }

@@ -3,6 +3,8 @@
 namespace Spatie\Health\Http\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -13,7 +15,13 @@ use Spatie\Health\ResultStores\ResultStore;
 
 class HealthCheckResultsController
 {
-    public function __invoke(Request $request, ResultStore $resultStore, Health $health): JsonResponse|View
+    /**
+     * @param Request $request
+     * @param ResultStore $resultStore
+     * @param Health $health
+     * @return Application|Factory|\Illuminate\Contracts\View\View
+     */
+    public function __invoke(Request $request, ResultStore $resultStore, Health $health)
     {
         if ($request->has('fresh')) {
             Artisan::call(RunHealthChecksCommand::class);
@@ -22,7 +30,7 @@ class HealthCheckResultsController
         $checkResults = $resultStore->latestResults();
 
         return view('health::list', [
-            'lastRanAt' => new Carbon($checkResults?->finishedAt),
+            'lastRanAt' => new Carbon($checkResults ? $checkResults->finishedAt : null),
             'checkResults' => $checkResults,
             'assets' => $health->assets(),
             'theme' => config('health.theme'),

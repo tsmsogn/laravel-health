@@ -2,6 +2,7 @@
 
 namespace Spatie\Health\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Health\ResultStores\EloquentHealthResultStore;
 
 /**
- * @property \Carbon\Carbon $created_at
+ * @property Carbon $created_at
  * @property string $batch
  * @property string $ended_at
  * @property string $notification_message

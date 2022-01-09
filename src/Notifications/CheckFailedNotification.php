@@ -3,6 +3,7 @@
 namespace Spatie\Health\Notifications;
 
 use Carbon\Carbon;
+use Illuminate\Cache\CacheManager;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackAttachment;
 use Illuminate\Notifications\Messages\SlackMessage;
@@ -12,9 +13,12 @@ use Spatie\Health\Enums\Status;
 
 class CheckFailedNotification extends Notification
 {
+    public array $results;
+
     /** @param array<int, Result> $results */
-    public function __construct(public array $results)
+    public function __construct(array $results)
     {
+        $this->results = $results;
     }
 
     /** @return array<int,string> */
@@ -41,7 +45,7 @@ class CheckFailedNotification extends Notification
 
         $cacheKey = 'health.latestNotificationSentAt';
 
-        /** @var \Illuminate\Cache\CacheManager $cache */
+        /** @var CacheManager $cache */
         $cache = app('cache');
 
         /** @var string $timestamp */

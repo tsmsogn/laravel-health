@@ -10,8 +10,9 @@ class CheckDidNotComplete extends Exception
     public static function make(Check $check, Exception $exception): self
     {
         return new self(
-            message: "The check named `{$check->getName()}` did not complete. An exception was thrown with this message: `{$exception->getMessage()}`",
-            previous: $exception,
+            "The check named `{$check->getName()}` did not complete. An exception was thrown with this message: `{$exception->getMessage()}`",
+            0,
+            $exception
         );
     }
 }

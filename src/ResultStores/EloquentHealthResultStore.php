@@ -58,24 +58,23 @@ class EloquentHealthResultStore implements ResultStore
             return null;
         }
 
-        /** @var Collection<int, StoredCheckResult> $storedCheckResults */
         $storedCheckResults = (static::determineHistoryItemModel())::query()
             ->where('batch', $latestItem->batch)
             ->get()
             ->map(function (HealthCheckResultHistoryItem $historyItem) {
                 return new StoredCheckResult(
-                    name: $historyItem->check_name,
-                    label: $historyItem->check_label,
-                    notificationMessage: $historyItem->notification_message,
-                    shortSummary: $historyItem->short_summary,
-                    status: $historyItem->status,
-                    meta: $historyItem->meta,
+                    $historyItem->check_name,
+                    $historyItem->check_label,
+                    $historyItem->notification_message,
+                    $historyItem->short_summary,
+                    $historyItem->status,
+                    $historyItem->meta,
                 );
             });
 
         return new StoredCheckResults(
-            finishedAt: $latestItem->created_at,
-            checkResults: $storedCheckResults,
+            $latestItem->created_at,
+            $storedCheckResults,
         );
     }
 }

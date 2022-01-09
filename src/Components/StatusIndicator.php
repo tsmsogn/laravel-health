@@ -9,8 +9,11 @@ use Spatie\Health\ResultStores\StoredCheckResults\StoredCheckResult;
 
 class StatusIndicator extends Component
 {
-    public function __construct(public StoredCheckResult $result)
+    public StoredCheckResult $result;
+
+    public function __construct(StoredCheckResult $result)
     {
+        $this->result = $result;
     }
 
     public function render(): View
@@ -25,34 +28,52 @@ class StatusIndicator extends Component
 
     protected function getBackgroundColor(string $status): string
     {
-        return match ($status) {
-            Status::ok()->value => 'md:bg-emerald-100 md:dark:bg-emerald-800',
-            Status::warning()->value => 'md:bg-yellow-100  md:dark:bg-yellow-800',
-            Status::skipped()->value => 'md:bg-blue-100  md:dark:bg-blue-800',
-            Status::failed()->value, Status::crashed()->value => 'md:bg-red-100  md:dark:bg-red-800',
-            default => 'md:bg-gray-100 md:dark:bg-gray-600'
-        };
+        switch ($status) {
+            case Status::ok()->value:
+                return 'md:bg-emerald-100 md:dark:bg-emerald-800';
+            case Status::warning()->value:
+                return 'md:bg-yellow-100  md:dark:bg-yellow-800';
+            case Status::skipped()->value:
+                return 'md:bg-blue-100  md:dark:bg-blue-800';
+            case Status::failed()->value:
+            case Status::crashed()->value:
+                return 'md:bg-red-100  md:dark:bg-red-800';
+        }
+
+        return 'md:bg-gray-100 md:dark:bg-gray-600';
     }
 
     protected function getIconColor(string $status): string
     {
-        return match ($status) {
-            Status::ok()->value => 'text-emerald-500',
-            Status::warning()->value => 'text-yellow-500',
-            Status::skipped()->value => 'text-blue-500',
-            Status::failed()->value, Status::crashed()->value => 'text-red-500',
-            default => 'text-gray-500'
-        };
+        switch ($status) {
+            case Status::ok()->value:
+                return 'text-emerald-500';
+            case Status::warning()->value:
+                return 'text-yellow-500';
+            case Status::skipped()->value:
+                return 'text-blue-500';
+            case Status::failed()->value:
+            case Status::crashed()->value:
+                return 'text-red-500';
+        }
+
+        return 'text-gray-500';
     }
 
     protected function getIcon(string $status): string
     {
-        return match ($status) {
-            Status::ok()->value => 'check-circle',
-            Status::warning()->value => 'exclamation-circle',
-            Status::skipped()->value => 'arrow-circle-right',
-            Status::failed()->value, Status::crashed()->value => 'x-circle',
-            default => ''
-        };
+        switch ($status) {
+            case Status::ok()->value:
+                return 'check-circle';
+            case Status::warning()->value:
+                return 'exclamation-circle';
+            case Status::skipped()->value:
+                return 'arrow-circle-right';
+            case Status::failed()->value:
+            case Status::crashed()->value:
+                return 'x-circle';
+        }
+
+        return '';
     }
 }

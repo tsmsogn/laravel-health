@@ -34,7 +34,7 @@ class ListHealthChecksCommand extends Command
         $checkResults = $resultStore->latestResults();
 
         render(view('health::list-cli', [
-            'lastRanAt' => new Carbon($checkResults?->finishedAt),
+            'lastRanAt' => new Carbon($checkResults ? $checkResults->finishedAt : null),
             'checkResults' => $checkResults,
             'color' => fn (string $status) => $this->getBackgroundColor($status),
         ]));
@@ -46,12 +46,18 @@ class ListHealthChecksCommand extends Command
     {
         $status = Status::from($status);
 
-        return match ($status) {
-            Status::ok() => 'bg-green-800',
-            Status::warning() => 'bg-yellow-800',
-            Status::skipped() => 'bg-blue-800',
-            Status::failed(), Status::crashed() => 'bg-red-800',
-            default => ''
-        };
+        switch ($status) {
+            case Status::ok():
+                return 'bg-green-800';
+            case Status::warning():
+                return 'bg-yellow-800';
+            case Status::skipped():
+                return 'bg-blue-800';
+            case Status::failed():
+            case Status::crashed():
+                return 'bg-red-800';
+        }
+
+        return '';
     }
 }

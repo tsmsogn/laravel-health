@@ -13,6 +13,9 @@ class Result
     public array $meta = [];
     public Check $check;
     public ?CarbonInterface $ended_at;
+    public Status $status;
+    public string $notificationMessage = '';
+    public string $shortSummary = '';
 
     public static function make(string $message = ''): self
     {
@@ -20,10 +23,13 @@ class Result
     }
 
     public function __construct(
-        public Status  $status,
-        public string $notificationMessage = '',
-        public string $shortSummary = '',
+        Status  $status,
+        string $notificationMessage = '',
+        string $shortSummary = ''
     ) {
+        $this->shortSummary = $shortSummary;
+        $this->notificationMessage = $notificationMessage;
+        $this->status = $status;
     }
 
     public function shortSummary(string $shortSummary): self
